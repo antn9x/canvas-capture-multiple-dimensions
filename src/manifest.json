@@ -1,18 +1,16 @@
 {
-  "name": "Name of your chrome extension",
+  "name": "canvas-capture-multiple-dimensions",
   "description": "Description of your chrome extension.",
   "version": "0.0.1",
-  "manifest_version": 2,
-  "browser_action": {
+  "manifest_version": 3,
+  "action": {
     "default_icon": "images/icon128.png",
     "default_popup": "popup.html"
   },
   "permissions": [],
   "background": {
-    "scripts": [
-      "hot-reload.js",
-      "background.js"
-    ]
+    "service_worker": "background.ts",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -20,8 +18,12 @@
         "http://*/*",
         "https://*/*"
       ],
-      "js": ["contentscript.js"]
+      "js": [
+        "content-script.ts"
+      ]
     }
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }

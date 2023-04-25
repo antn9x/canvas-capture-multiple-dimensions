@@ -1,6 +1,7 @@
-import extension from './extensionAPIs'
+// import extension from './extensionAPIs'
+// import './hot-reload'
 
-extension.runtime.onInstalled.addListener((details) => {
+chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     console.log('extension installed!')
   }

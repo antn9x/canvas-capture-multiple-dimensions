@@ -1,29 +1,29 @@
-const filesInDirectory = dir =>
+const filesInDirectory = (dir: FileSystemDirectoryEntry): any =>
   new Promise(resolve =>
-    dir.createReader().readEntries(entries =>
+    dir.createReader().readEntries((entries) =>
       Promise.all(
         entries
           .filter(e => e.name[0] !== ".")
           .map(
             e =>
               e.isDirectory
-                ? filesInDirectory(e)
-                : new Promise(resolve => e.file(resolve))
+                ? filesInDirectory(e as FileSystemDirectoryEntry)
+                : new Promise(resolve => (e as FileSystemFileEntry).file(resolve))
           )
       )
-        .then(files => [].concat(...files))
+        .then((files: any) => [].concat(...files))
         .then(resolve)
     )
   );
 
-const timestampForFilesInDirectory = dir =>
-  filesInDirectory(dir).then(files =>
-    files.map(f => f.name + f.lastModifiedDate).join()
+const timestampForFilesInDirectory = (dir: FileSystemDirectoryEntry) =>
+  filesInDirectory(dir).then((files: any) =>
+    files.map((f: { name: any; lastModifiedDate: any; }) => f.name + f.lastModifiedDate).join()
   );
 
 const reload = () => {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    if (tabs[0]) {
+    if (tabs[0].id) {
       chrome.tabs.reload(tabs[0].id);
     }
 
@@ -31,8 +31,8 @@ const reload = () => {
   });
 };
 
-const watchChanges = (dir, lastTimestamp) => {
-  timestampForFilesInDirectory(dir).then(timestamp => {
+const watchChanges = (dir: FileSystemDirectoryEntry, lastTimestamp?: string) => {
+  timestampForFilesInDirectory(dir).then((timestamp: string) => {
     if (!lastTimestamp || lastTimestamp === timestamp) {
       setTimeout(() => watchChanges(dir, timestamp), 1000); // retry after 1s
     } else {
