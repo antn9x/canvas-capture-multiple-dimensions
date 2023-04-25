@@ -1,0 +1,58 @@
+{
+  "name": "canvas-capture-multiple-dimensions",
+  "browserslist": "> 0.25%, not dead",
+  "alias": {
+    "process": false
+  },
+  "scripts": {
+    "start": "yarn clean && yarn copy-static && yarn watch:all",
+    "build": "yarn clean && yarn build:all && yarn copy-static",
+    "build:all": "yarn build:background & yarn build:contentscript & yarn build:popup",
+    "build:contentscript": "parcel build src/contentscript.ts",
+    "build:background": "parcel build src/background.ts",
+    "build:popup": "parcel build src/popup.tsx --public-url='/'",
+    "watch:all": "concurrently \"pnpm watch:background \" \"pnpm watch:contentscript \" \"pnpm watch:popup \" \"npm-watch \" \"pnpm css-types -w\"",
+    "watch:contentscript": "parcel watch src/contentscript.ts",
+    "watch:background": "parcel watch src/background.ts",
+    "watch:popup": "parcel watch src/popup.tsx --public-url='/'",
+    "copy-static": "copyfiles -f static/* dist/ && copyfiles -f static/images/* dist/images",
+    "clean": "rimraf dist",
+    "css-types": "tcm src",
+    "postinstall": "yarn css-types",
+    "precommit": "lint-staged"
+  },
+  "watch": {
+    "copy-static": {
+      "patterns": [
+        "static"
+      ],
+      "extensions": "*",
+      "quiet": false
+    }
+  },
+  "devDependencies": {
+    "@ceoimon/typed-css-modules": "^0.1.0",
+    "@types/chrome": "^0.0.233",
+    "@types/react": "^18.0.38",
+    "@types/react-dom": "^18.0.11",
+    "concurrently": "^8.0.1",
+    "copyfiles": "^2.4.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
+    "npm-watch": "^0.11.0",
+    "parcel": "^2.8.3",
+    "postcss-modules": "^4.3.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.4",
+    "web-ext-types": "^3.2.1"
+  },
+  "dependencies": {
+    "cssnano": "^6.0.0",
+    "postcss": "^8.4.23",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "scheduler": "^0.23.0"
+  },
+  "version": "0.0.0",
+  "private": true
+}
