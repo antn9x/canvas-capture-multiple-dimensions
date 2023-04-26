@@ -44,12 +44,13 @@ chrome.runtime.onMessage.addListener(
         const selections = document.querySelector('#opts-device');
         setTimeout(() => {
           if (selections instanceof HTMLSelectElement) {
-            selections.value = `${Math.floor(index / 2) + 1}`;
+            const indexOption = Math.floor(index / 2) + 1;
+            selections.value = `${indexOption}`;
             const evtChange = document.createEvent("HTMLEvents");
             evtChange.initEvent("change", true, true);
             selections.dispatchEvent(evtChange);
             if (index % 2)
-              DownloadCanvasAsImage(selections.textContent!);
+              DownloadCanvasAsImage(selections.childNodes[indexOption].textContent!);
           }
         }, 500 * index)
       }
