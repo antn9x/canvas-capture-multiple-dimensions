@@ -1,27 +1,16 @@
-declare var cc: any;
-// alert('hello from extension')
-function DownloadCanvasAsImage() {
+
+function DownloadCanvasAsImage(dimension: string) {
   let downloadLink = document.createElement('a');
-  downloadLink.setAttribute('download', 'CanvasAsImage.png');
+  downloadLink.setAttribute('download', `screen_shoot_${dimension}_${Date.now()}.png`);
   let canvas = document.getElementById('GameCanvas');
   if (canvas instanceof HTMLCanvasElement) {
-    // canvas.width= 72;
-    // canvas.height= 172;
-    // canvas.style.width = '72px';
-    // canvas.style.height = '172px';
     downloadLink.setAttribute('href', canvas.toDataURL("image/png")
       .replace("image/png", "image/octet-stream"));
     downloadLink.click();
     downloadLink.remove();
-    // canvas.toBlob(function (blob) {
-    //   if (blob) {
-    //     let url = URL.createObjectURL(blob);
-    //     downloadLink.setAttribute('href', url);
-    //     downloadLink.click();
-    //   }
-    // });
   }
 }
+
 function openCanvasInNewTab() {
   const canvas = document.getElementById('GameCanvas')
   console.log('ac', canvas)
@@ -59,10 +48,10 @@ chrome.runtime.onMessage.addListener(
             const evtChange = document.createEvent("HTMLEvents");
             evtChange.initEvent("change", true, true);
             selections.dispatchEvent(evtChange);
+            if (index % 2)
+              DownloadCanvasAsImage(selections.textContent!);
           }
-          if (index % 2)
-            DownloadCanvasAsImage();
-        }, 1000 * index)
+        }, 500 * index)
       }
     }
   }
