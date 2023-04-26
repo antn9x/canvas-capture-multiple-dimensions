@@ -1,11 +1,11 @@
 
 function DownloadCanvasAsImage(dimension: string) {
   let downloadLink = document.createElement('a');
-  downloadLink.setAttribute('download', `screen_shoot_${dimension}_${Date.now()}.png`);
+  downloadLink.setAttribute('download', `screen_shoot_${dimension}_${Date.now()}.jpeg`);
   let canvas = document.getElementById('GameCanvas');
   if (canvas instanceof HTMLCanvasElement) {
-    downloadLink.setAttribute('href', canvas.toDataURL("image/png")
-      .replace("image/png", "image/octet-stream"));
+    downloadLink.setAttribute('href', canvas.toDataURL("image/jpeg")
+      .replace("image/jpeg", "image/octet-stream"));
     downloadLink.click();
     downloadLink.remove();
   }
