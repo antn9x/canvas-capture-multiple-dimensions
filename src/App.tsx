@@ -6,10 +6,17 @@ import * as classes from './App.css'
 
 function App() {
   function onClickCapture() {
-    chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+    chrome.tabs.query({ currentWindow: true, active: true }, async function (tabs) {
       var activeTab = tabs[0];
-      if (activeTab.id)
+      // if (currentWindow.id)
+      //   await chrome.windows.update(currentWindow.id, { width: 1500, height: 2000 });
+      // const url = await chrome.tabs.captureVisibleTab();
+      // console.log(url)
+      // chrome.devtools.
+      if (activeTab.id) {
         chrome.tabs.sendMessage(activeTab.id, { "message": "start" });
+        // chrome.tabs.sendMessage(activeTab.id, { "message": "capture", url });
+      }
     });
   }
 
